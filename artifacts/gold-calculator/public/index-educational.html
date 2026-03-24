@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>حاسبة الذهب الذكية - دليل المشروع التعليمي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #0a0a0a;
+      color: #e5c46e;
+      line-height: 1.8;
+      min-height: 100vh;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1200 50%, #0a0a0a 100%);
+      border-bottom: 1px solid #c9a227/30;
+      padding: 60px 24px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      color: #f5c842;
+      text-shadow: 0 0 40px rgba(245,200,66,0.3);
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: #c9a227;
+      opacity: 0.8;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(245,200,66,0.1);
+      border: 1px solid rgba(245,200,66,0.3);
+      color: #f5c842;
+      border-radius: 999px;
+      padding: 4px 16px;
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #f5c842;
+      margin-bottom: 24px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(245,200,66,0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title span { font-size: 1.4rem; }
+
+    .card {
+      background: rgba(245,200,66,0.04);
+      border: 1px solid rgba(245,200,66,0.15);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    .card h3 {
+      color: #f5c842;
+      font-weight: 700;
+      margin-bottom: 8px;
+      font-size: 1.05rem;
+    }
+
+    .card p, .card li {
+      color: rgba(229, 196, 110, 0.75);
+      font-size: 0.95rem;
+    }
+
+    .card ul { list-style: none; }
+    .card ul li::before { content: "◆ "; color: #f5c842; font-size: 0.7rem; }
+    .card ul li { padding: 3px 0; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+    @media (max-width: 700px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    .file-tree {
+      background: #0d0d0d;
+      border: 1px solid rgba(245,200,66,0.15);
+      border-radius: 12px;
+      padding: 20px 24px;
+      font-family: monospace;
+      font-size: 0.9rem;
+    }
+
+    .file-tree .dir { color: #f5c842; font-weight: bold; }
+    .file-tree .file { color: rgba(229,196,110,0.65); }
+    .file-tree .line { padding: 2px 0; }
+    .file-tree .indent1 { padding-right: 20px; }
+    .file-tree .indent2 { padding-right: 40px; }
+    .file-tree .indent3 { padding-right: 60px; }
+
+    code {
+      background: rgba(245,200,66,0.08);
+      border: 1px solid rgba(245,200,66,0.15);
+      border-radius: 6px;
+      padding: 2px 8px;
+      font-family: monospace;
+      font-size: 0.88rem;
+      color: #f5c842;
+    }
+
+    .formula-box {
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(245,200,66,0.2);
+      border-radius: 12px;
+      padding: 20px;
+      font-family: monospace;
+      color: #f5c842;
+      margin-top: 12px;
+      line-height: 2;
+    }
+
+    .tag {
+      display: inline-block;
+      background: rgba(245,200,66,0.1);
+      border: 1px solid rgba(245,200,66,0.25);
+      color: #f5c842;
+      border-radius: 6px;
+      padding: 2px 10px;
+      font-size: 0.8rem;
+      margin: 3px;
+    }
+
+    .section { margin-bottom: 56px; }
+
+    .author-card {
+      background: linear-gradient(135deg, rgba(245,200,66,0.08), rgba(245,200,66,0.02));
+      border: 1px solid rgba(245,200,66,0.25);
+      border-radius: 20px;
+      padding: 32px;
+      text-align: center;
+    }
+
+    .author-card img {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      border: 3px solid rgba(245,200,66,0.5);
+      margin-bottom: 16px;
+      object-fit: cover;
+    }
+
+    .author-card h2 {
+      color: #f5c842;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .author-card p { color: rgba(229,196,110,0.65); }
+
+    .links { display: flex; justify-content: center; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: opacity 0.2s;
+    }
+
+    .link-btn:hover { opacity: 0.8; }
+    .link-btn.fb { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); color: #93c5fd; }
+    .link-btn.wa { background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); color: #86efac; }
+
+    footer {
+      text-align: center;
+      padding: 32px;
+      border-top: 1px solid rgba(245,200,66,0.1);
+      color: rgba(229,196,110,0.4);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="badge">📚 دليل المشروع التعليمي</div>
+    <h1>حاسبة الذهب الذكية</h1>
+    <p>توثيق شامل لبنية المشروع والتقنيات المستخدمة وطريقة عمله</p>
+  </div>
+
+  <div class="container">
+
+    <!-- Tech Stack -->
+    <div class="section">
+      <div class="section-title"><span>🛠️</span> التقنيات المستخدمة</div>
+      <div class="grid-3">
+        <div class="card">
+          <h3>الواجهة الأمامية</h3>
+          <ul>
+            <li>React 18 + TypeScript</li>
+            <li>Vite (Build Tool)</li>
+            <li>Tailwind CSS</li>
+            <li>Framer Motion</li>
+            <li>Wouter (Routing)</li>
+            <li>React Query</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>الخادم (Backend)</h3>
+          <ul>
+            <li>Node.js + Express</li>
+            <li>TypeScript</li>
+            <li>Pino (Logging)</li>
+            <li>OpenAI API</li>
+            <li>Yahoo Finance API</li>
+            <li>In-memory Cache</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>الأدوات والبنية</h3>
+          <ul>
+            <li>pnpm Workspaces</li>
+            <li>Replit Hosting</li>
+            <li>Google AdSense</li>
+            <li>OpenAPI + Codegen</li>
+            <li>RTL Arabic UI</li>
+            <li>Visitor Counter</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- File Structure -->
+    <div class="section">
+      <div class="section-title"><span>📁</span> بنية ملفات المشروع</div>
+      <div class="file-tree">
+        <div class="line dir">gold-calculator/</div>
+        <div class="line indent1 dir">├── src/</div>
+        <div class="line indent2 dir">│   ├── pages/</div>
+        <div class="line indent3 file">│   │   ├── Home.tsx         ← الصفحة الرئيسية (الحاسبة)</div>
+        <div class="line indent3 file">│   │   ├── AIAdvice.tsx     ← نصائح الذكاء الاصطناعي</div>
+        <div class="line indent3 file">│   │   ├── About.tsx        ← صفحة عنّا</div>
+        <div class="line indent3 file">│   │   ├── HowToUse.tsx     ← كيفية الاستخدام</div>
+        <div class="line indent3 file">│   │   └── Contact.tsx      ← تواصل معنا</div>
+        <div class="line indent2 dir">│   ├── components/</div>
+        <div class="line indent3 file">│   │   ├── navbar.tsx       ← شريط التنقل</div>
+        <div class="line indent3 file">│   │   ├── gold-card.tsx    ← كرت عيار الذهب</div>
+        <div class="line indent3 file">│   │   └── ui/luxury-input.tsx</div>
+        <div class="line indent2 dir">│   ├── hooks/</div>
+        <div class="line indent3 file">│   │   └── use-gold-calculator.ts ← منطق الحسابات</div>
+        <div class="line indent2 file">│   ├── App.tsx              ← الراوتر الرئيسي</div>
+        <div class="line indent2 file">│   └── index.css            ← المتغيرات والتصميم</div>
+        <div class="line indent1 dir">├── public/</div>
+        <div class="line indent2 file">│   └── images/              ← الصور (إعلان + خلفية + صورة شخصية)</div>
+        <div class="line indent1 file">└── index.html               ← نقطة الدخول + AdSense</div>
+        <br/>
+        <div class="line dir">api-server/</div>
+        <div class="line indent1 dir">├── src/routes/</div>
+        <div class="line indent2 file">│   ├── gold.ts              ← جلب أسعار الذهب + كاش</div>
+        <div class="line indent2 file">│   ├── visitors.ts          ← عداد الزوار</div>
+        <div class="line indent2 file">│   └── ai-advice.ts         ← نصائح الذكاء الاصطناعي (SSE)</div>
+        <div class="line indent1 file">└── data/visitors.json       ← ملف حفظ عداد الزوار</div>
+      </div>
+    </div>
+
+    <!-- Pages -->
+    <div class="section">
+      <div class="section-title"><span>📄</span> صفحات الموقع</div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>🏠 الصفحة الرئيسية</h3>
+          <p>تعرض حاسبة الذهب مع حقول إدخال سعر الدولار والأونصة وأجرة الصياغة، وتجلب الأسعار اللحظية من Yahoo Finance. تعرض كروت العيارات 18 و21 و24 قيراط.</p>
+        </div>
+        <div class="card">
+          <h3>🤖 نصائح ذكاء اصطناعي</h3>
+          <p>تستخدم GPT-5.2 لتحليل أسعار الذهب الحالية وتقديم نصائح استثمارية باللغة العربية بتدفق فوري (Streaming) عبر SSE.</p>
+        </div>
+        <div class="card">
+          <h3>📖 كيفية الاستخدام</h3>
+          <p>شرح خطوة بخطوة لطريقة استخدام الحاسبة، مع توضيح المعادلة الرياضية المستخدمة في الحساب.</p>
+        </div>
+        <div class="card">
+          <h3>👤 عنّا + تواصل</h3>
+          <p>معلومات عن المصمم Mustafa Abdelhaleem مع صورته الشخصية وروابط التواصل (فيسبوك، واتساب، بريد إلكتروني).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formula -->
+    <div class="section">
+      <div class="section-title"><span>🧮</span> معادلة حساب الذهب</div>
+      <div class="card">
+        <p>تعتمد الحاسبة على المعادلة الرسمية لتحويل سعر الأونصة العالمي إلى سعر الجرام بالجنيه المصري:</p>
+        <div class="formula-box">
+          سعر جرام 24 قيراط = (سعر الأونصة بالدولار × سعر الدولار) ÷ 31.1035
+          <br/>
+          سعر جرام 21 قيراط = سعر 24 × (21 ÷ 24) = سعر 24 × 0.875
+          <br/>
+          سعر جرام 18 قيراط = سعر 24 × (18 ÷ 24) = سعر 24 × 0.750
+        </div>
+      </div>
+    </div>
+
+    <!-- API Endpoints -->
+    <div class="section">
+      <div class="section-title"><span>🔌</span> نقاط الـ API</div>
+      <div class="card">
+        <h3><code>GET /api/gold/live-rates</code></h3>
+        <p>يجلب سعر الذهب الدولي (GC=F) وسعر الدولار مقابل الجنيه (USDEGP=X) من Yahoo Finance مع كاش لمدة 3 دقائق وحد زمني 6 ثوان.</p>
+      </div>
+      <div class="card">
+        <h3><code>GET /api/gold/prices</code></h3>
+        <p>يحسب أسعار العيارات (18، 21، 24) بناءً على المعاملات: <code>usdRate</code>، <code>ouncePriceUsd</code>، <code>workmanship</code></p>
+      </div>
+      <div class="card">
+        <h3><code>POST /api/visitors/hit</code> | <code>GET /api/visitors</code></h3>
+        <p>يسجل الزيارة ويُعيد عدد الزوار الإجمالي. يُخزَّن في <code>data/visitors.json</code> على السيرفر.</p>
+      </div>
+      <div class="card">
+        <h3><code>POST /api/ai/advice</code></h3>
+        <p>يستقبل أسعار الذهب الحالية ويُعيد تحليلاً استثمارياً من GPT-5.2 عبر Server-Sent Events (SSE) — يبدأ الرد فورياً قبل اكتماله.</p>
+      </div>
+    </div>
+
+    <!-- Key Features -->
+    <div class="section">
+      <div class="section-title"><span>⭐</span> المميزات الرئيسية</div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>الأداء والسرعة</h3>
+          <ul>
+            <li>كاش في الذاكرة للأسعار (3 دقائق)</li>
+            <li>حد زمني 6 ثوان لطلبات Yahoo Finance</li>
+            <li>Streaming للـ AI بدون انتظار</li>
+            <li>Debounce للإدخال اليدوي</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>تجربة المستخدم</h3>
+          <ul>
+            <li>واجهة RTL عربية كاملة</li>
+            <li>تصميم فاخر بألوان الذهب</li>
+            <li>متجاوب مع الموبايل</li>
+            <li>أرقام غربية (133 بدل ١٣٣)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>الإعلانات والتتبع</h3>
+          <ul>
+            <li>Google AdSense مدمج</li>
+            <li>إعلان Noon مباشر</li>
+            <li>عداد زوار حقيقي</li>
+            <li>يحفظ العدد على السيرفر</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>الذكاء الاصطناعي</h3>
+          <ul>
+            <li>نموذج GPT-5.2 أحدث نموذج</li>
+            <li>تحليل باللغة العربية</li>
+            <li>مبني على الأسعار الفعلية</li>
+            <li>تحذير من مخاطر الاستثمار</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Author -->
+    <div class="section">
+      <div class="section-title"><span>👨‍💻</span> المصمم</div>
+      <div class="author-card">
+        <img src="images/mustafa-profile.jpeg" alt="Mustafa Abdelhaleem" onerror="this.style.display='none'" />
+        <h2>Mustafa Abdelhaleem</h2>
+        <p>مهندس مصري · مصمم حاسبة الذهب الذكية</p>
+        <div class="links">
+          <a href="https://www.facebook.com/0mostafaali/?locale=ar_AR" target="_blank" class="link-btn fb">
+            📘 فيسبوك
+          </a>
+          <a href="https://wa.me/966570059211" target="_blank" class="link-btn wa">
+            📱 واتساب
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>حاسبة الذهب الذكية · صُمّمت بواسطة Mustafa Abdelhaleem · 2025</p>
+    <p style="margin-top:6px; font-size:0.8rem; opacity:0.5;">هذا الملف للأغراض التعليمية فقط</p>
+  </footer>
+
+</body>
+</html>

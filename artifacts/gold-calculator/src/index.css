@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme inline {
+  --font-sans: 'Cairo', sans-serif;
+  --font-display: 'Amiri', serif;
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-gold-100: hsl(43, 80%, 90%);
+  --color-gold-200: hsl(43, 80%, 80%);
+  --color-gold-300: hsl(43, 80%, 65%);
+  --color-gold-400: hsl(43, 80%, 50%);
+  --color-gold-500: hsl(43, 74%, 40%);
+  --color-gold-600: hsl(43, 80%, 30%);
+  --color-gold-700: hsl(43, 80%, 20%);
+  --color-gold-800: hsl(43, 80%, 15%);
+  --color-gold-900: hsl(43, 80%, 10%);
+  --color-gold-950: hsl(43, 80%, 5%);
+}
+
+:root {
+  /* Dark Luxury Theme */
+  --background: 0 0% 4%;
+  --foreground: 43 20% 90%;
+  
+  --primary: 43 74% 49%;
+  --primary-foreground: 0 0% 0%;
+  
+  --secondary: 0 0% 10%;
+  --secondary-foreground: 43 50% 80%;
+  
+  --muted: 0 0% 12%;
+  --muted-foreground: 43 20% 60%;
+  
+  --accent: 30 100% 50%;
+  --accent-foreground: 0 0% 100%;
+  
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  
+  --border: 43 30% 20%;
+  --input: 0 0% 10%;
+  --ring: 43 74% 49%;
+  
+  --card: 0 0% 6%;
+  --card-foreground: 43 20% 90%;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground antialiased font-sans;
+    direction: rtl; /* Enforce RTL for Arabic */
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    @apply font-bold tracking-tight;
+  }
+}
+
+@layer utilities {
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-gold-200 via-gold-400 to-gold-600;
+  }
+  
+  .bg-gradient-gold {
+    @apply bg-gradient-to-br from-gold-300 via-gold-500 to-gold-700;
+  }
+  
+  .border-gradient-gold {
+    border-image: linear-gradient(to right, hsl(var(--gold-300)), hsl(var(--gold-600))) 1;
+  }
+  
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-lg border border-white/5 shadow-xl shadow-black/50;
+  }
+}
+
+/* Custom Webkit Scrollbar for premium feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--border));
+}

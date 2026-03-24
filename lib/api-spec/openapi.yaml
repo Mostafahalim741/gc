@@ -1,0 +1,170 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: gold
+    description: Gold price calculation
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /gold/live-rates:
+    get:
+      operationId: getLiveRates
+      tags: [gold]
+      summary: Get live gold and USD rates
+      description: Fetches live gold ounce price in USD and USD/EGP exchange rate
+      responses:
+        "200":
+          description: Live rates
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LiveRatesResponse"
+        "503":
+          description: Could not fetch live rates
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /gold/prices:
+    get:
+      operationId: getGoldPrices
+      tags: [gold]
+      summary: Get gold prices
+      description: Calculate gold prices for 18k, 21k, and 24k based on USD rate and troy ounce price
+      parameters:
+        - name: usdRate
+          in: query
+          required: true
+          description: USD to EGP exchange rate (Banque Misr rate)
+          schema:
+            type: number
+        - name: ouncePriceUsd
+          in: query
+          required: true
+          description: Gold price per troy ounce in USD
+          schema:
+            type: number
+        - name: workmanship
+          in: query
+          required: false
+          description: Workmanship fee per gram in EGP
+          schema:
+            type: number
+            default: 0
+      responses:
+        "200":
+          description: Gold prices per gram in EGP for each karat
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GoldPricesResponse"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    GoldKaratPrice:
+      type: object
+      properties:
+        karat:
+          type: integer
+          description: Gold karat (18, 21, or 24)
+        purity:
+          type: number
+          description: Gold purity fraction
+        pricePerGramEgp:
+          type: number
+          description: Price per gram in EGP (before workmanship)
+        pricePerGramWithWorkmanshipEgp:
+          type: number
+          description: Price per gram in EGP (with workmanship)
+      required:
+        - karat
+        - purity
+        - pricePerGramEgp
+        - pricePerGramWithWorkmanshipEgp
+    GoldPricesResponse:
+      type: object
+      properties:
+        usdRate:
+          type: number
+          description: USD to EGP rate used
+        ouncePriceUsd:
+          type: number
+          description: Gold ounce price in USD used
+        ouncePriceEgp:
+          type: number
+          description: Gold ounce price in EGP (= ouncePriceUsd * usdRate)
+        pricePerGramEgp24k:
+          type: number
+          description: Price per gram 24k in EGP (base)
+        workmanship:
+          type: number
+          description: Workmanship fee per gram in EGP
+        karats:
+          type: array
+          items:
+            $ref: "#/components/schemas/GoldKaratPrice"
+      required:
+        - usdRate
+        - ouncePriceUsd
+        - ouncePriceEgp
+        - pricePerGramEgp24k
+        - workmanship
+        - karats
+    LiveRatesResponse:
+      type: object
+      properties:
+        ouncePriceUsd:
+          type: number
+          description: Current gold ounce price in USD
+        usdToEgp:
+          type: number
+          description: Current USD to EGP exchange rate
+        source:
+          type: string
+          description: Data source description
+        fetchedAt:
+          type: string
+          description: Timestamp when data was fetched
+      required:
+        - ouncePriceUsd
+        - usdToEgp
+        - source
+        - fetchedAt
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
